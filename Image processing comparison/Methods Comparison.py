@@ -1,10 +1,5 @@
 # %%
 
-import sorts as srt
-import readImage as rI
-import preProcessing as pP
-import perspective as pPe
-import indAnalysis as inA
 import operator
 import os
 import sys
@@ -14,13 +9,14 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-try:
-    os.chdir(os.path.join(os.getcwd(), 'Helper notebooks'))
-    print(os.getcwd())
-except:
-    print(os.getcwd())
-# Scripts para leer y procesar imagen
 sys.path.insert(0, '../Golden Master (AS IS)')
+import sorts as srt
+import readImage as rI
+import preProcessing as pP
+import perspective as pPe
+import indAnalysis as inA
+# Scripts para leer y procesar imagen
+
 # %%
 #imagesPath = './Positives/'
 imagesPath = './Negatives/'
@@ -107,10 +103,11 @@ for imageNumber, imageName in enumerate(images):
         kernel1 = cv2.getStructuringElement(cv2.MORPH_CROSS, (2, 2))
         imgBinaMaskDil = cv2.morphologyEx(
             imgBinaMask, cv2.MORPH_DILATE, kernel1)
-        kernel2 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
-        imgBinaMaskDilEro = cv2.morphologyEx(
-            imgBinaMaskDil, cv2.MORPH_OPEN, kernel2)
-        imgBinaMaskDil = cv2.bitwise_not(imgBinaMaskDilEro)
+        # kernel2 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
+        # imgBinaMaskDilEro = cv2.morphologyEx(
+        #     imgBinaMaskDil, cv2.MORPH_OPEN, kernel2)
+        # imgBinaMaskDil = cv2.bitwise_not(imgBinaMaskDilEro)
+        imgBinaMaskDil = cv2.bitwise_not(imgBinaMaskDil)
         kMeansOriginal.append(imgBinaMaskDil)
         # K Means processing (actual app)
         imgBina = pP.contourBinarizationOtsu(

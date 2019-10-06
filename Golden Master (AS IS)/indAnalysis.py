@@ -10,7 +10,7 @@ import preProcessing as pP
 import readImage as rI
 
 
-def readMask(url="../../Imagenes/mask_inv.png", size=90):
+def readMask(url="../Imagenes/mask_inv.png", size=90):
     mask = rI.readLocal(url)
     print(mask.shape)
     mask = resizeFixed(mask, size)
@@ -160,7 +160,7 @@ def blobDetect(img):
     # Change thresholds
     params.minThreshold = 50
     params.maxThreshold = 220
-    
+
     # Change repeatability
     params.minRepeatability = 2
 
@@ -169,9 +169,9 @@ def blobDetect(img):
 
     # Filter by Area.
     params.filterByArea = True
-    params.minArea = 20
+    params.minArea = 0
     params.maxArea = 5000
-    
+
     # Filter by color
     params.filterByColor = True
     params.blobColor = 0
@@ -190,7 +190,7 @@ def blobDetect(img):
     params.filterByInertia = True
     params.minInertiaRatio = 0.01
     params.maxInertiaRatio = 3.4028234663852886e+038
-    
+
 
     # Create a detector with the parameters
     detector = cv2.SimpleBlobDetector_create(params)
