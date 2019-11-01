@@ -129,3 +129,6 @@ ESATMean = df['ESAT6'].mean()
 CFMean = df['CF'].mean()
 RVMean = df['RV'].mean()
 ControlMean = df['Control'].mean()
+#%%
+fileName = 'WhitePixelsAreas.xlsx'
+df.to_excel(fileName)
