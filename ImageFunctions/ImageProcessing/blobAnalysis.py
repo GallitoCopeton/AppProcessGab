@@ -1,3 +1,5 @@
+import cv2
+
 def blobDetect(image):
     # Setup SimpleBlobDetector parameters.
     params = cv2.SimpleBlobDetector_Params()
