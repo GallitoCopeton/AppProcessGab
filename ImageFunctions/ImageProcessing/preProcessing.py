@@ -1,8 +1,7 @@
 
 import numpy as np
 import cv2
-import perspective as pPe
-import sorts as srt
+
 
 # Find Biggest Square
 

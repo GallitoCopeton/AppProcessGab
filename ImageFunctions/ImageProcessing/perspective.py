@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-import sorts as srt
+from ImageFunctions.ImageProcessing import sorts as srt
 
 def perspectiveTransform(img, points, offset, binary = False):
     if(binary):
