@@ -7,6 +7,8 @@ import pandas as pd
 
 from ImageFunctions.ImageProcessing import preProcessing as pP
 from ImageFunctions.ReadImages import readImage as rI
+from ImageFunctions.ImageProcessing import imageOperations as iO
+from ImageFunctions.ImageProcessing import indanalysis as inA
 
 
 def colorSegmentation(image, statsColor):  # Stats Hue and Saturation
@@ -37,10 +39,10 @@ def colorSegmentation(image, statsColor):  # Stats Hue and Saturation
         [cmean-cdev, exc_sat_low, 10]), np.array([cmean+cdev, 255, exc_val_high]))
 
     # Closing operation
-    mask3 = closing(mask3, 3)
+    mask3 = iO.closing(mask3, 3)
 
     # Opening operation
-    mask3 = opening(mask3, 3)
+    mask3 = iO.opening(mask3, 3)
 
     # And operation between mask and image
     andOp = andOperation(image, mask3)
@@ -52,8 +54,8 @@ def colorSegmentation(image, statsColor):  # Stats Hue and Saturation
 
 def controlStats(image, maskPath="../../Imagenes/mask3.png", maskSize=90, diab=False):
     stats = dict()
-    mask3 = readMask(maskPath, size=maskSize)
-    control = ~(andOperation(image, mask3))
+    mask3 = inA.readMask(maskPath, size=maskSize)
+    control = ~(iO.andOperation(image, mask3))
     controlHSV = cv2.cvtColor(control, cv2.COLOR_BGR2HSV)
 
     h, s, v = cv2.split(controlHSV)
@@ -78,8 +80,8 @@ def controlStats(image, maskPath="../../Imagenes/mask3.png", maskSize=90, diab=F
 def grayControlStats(image, maskPath="../../Imagenes/mask3.png", maskSize=90):
     image = pP.BGR2gray(image)
     stats = dict()
-    mask3 = readMask(maskPath, size=maskSize)
-    control = andOperation(image, mask3)
+    mask3 = inA.readMask(maskPath, size=maskSize)
+    control = iO.andOperation(image, mask3)
     # c = control.flatten()[(control.flatten() >= 5) & (control.flatten() <= 255)]
     c = control.flatten()[(control.flatten() >= 15)
                           & (control.flatten() <= 235)]
@@ -109,17 +111,14 @@ def isEmpty(imageBinary):
     return (percentage < 35)
 
 
-def closing(imageBin, kSize):
-    kernel = np.ones((kSize, kSize), np.uint8)
-    erosion = cv2.erode(imageBin, kernel, iterations=1)
-    return cv2.dilate(erosion, kernel, iterations=1)
-
-
-def opening(imageBin, kSize):
-    kernel = np.ones((kSize, kSize), np.uint8)
-    dilate = cv2.dilate(imageBin, kernel, iterations=1)
-    return cv2.erode(dilate, kernel, iterations=1)
-
-
 def totalWhitePixels(image):
     return cv2.countNonZero(image)
+
+
+def isBlurry(image):
+    laplacian = cv2.Laplacian(BGR2gray(image), cv2.CV_8U).max()
+    blur = 1000 / (laplacian + 1)
+    if blur < 6:
+        return 0  # Not blurry
+    else:
+        return 1  # Blurry

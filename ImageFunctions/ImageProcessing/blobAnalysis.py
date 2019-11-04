@@ -1,4 +1,7 @@
 import cv2
+import numpy as np
+import pandas as pd
+
 
 def blobDetect(image):
     # Setup SimpleBlobDetector parameters.
@@ -58,7 +61,7 @@ def areaEstimation(blobs):
 def getBlobInfoTB(markersNot):
     sites = ['ESAT6', 'CF', 'RV', 'Control']
     results = [
-        blobAnalysis(markerNot, blobDetect(markerNot))
+        areaEstimation(blobDetect(markerNot))
         for markerNot in markersNot
     ]
     return pd.DataFrame(results, index=sites, columns=['Pixels'])

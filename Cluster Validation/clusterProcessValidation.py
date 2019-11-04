@@ -13,7 +13,7 @@ imagesCollection = CLIENT.findValidation.images
 regx = re.compile("^102")
 query = {'fileName': regx}
 # %%
-images = rI.readManyCustomQueryDetails(imagesCollection, limit=2)
+images = rI.customQueryDetails(imagesCollection, query, limit=2)
 random.shuffle(images)
 # %%
 for image in images:

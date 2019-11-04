@@ -6,6 +6,10 @@ from matplotlib import pyplot as plt
 
 from ImageFunctions.ImageProcessing import preProcessing as pP
 from ImageFunctions.ImageProcessing import indAnalysis as inA
+from ImageFunctions.ImageProcessing import colorTransformations as cT
+from ImageFunctions.ImageProcessing import binarizations as bZ
+from ImageFunctions.ImageProcessing import imageOperations as iO
+from ImageFunctions.ImageProcessing import contours as ctr
 
 scriptPath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(scriptPath)
@@ -28,15 +32,15 @@ def clusteringProcess(listOfMarkers, kColors, attempts, extendedProcess=False):
         reconMarker = pP.clusterReconstruction(
             marker, criteria, kColors, attempts)
         LABMarker = cv2.cvtColor(reconMarker, cv2.COLOR_BGR2LAB)
-        LABMarkerGray = pP.BGR2gray(LABMarker)
-        binMarker = pP.otsuBinarize(LABMarkerGray)
+        LABMarkerGray = cT.BGR2gray(LABMarker)
+        binMarker = bZ.otsuBinarize(LABMarkerGray)
         # Transformations and masking
-        transMarker = inA.andOperation(binMarker, mask)
-        transMarker = pP.applyTransformation(
+        transMarker = iO.andOperation(binMarker, mask)
+        transMarker = iO.applyTransformation(
             transMarker, openKernel, cv2.MORPH_OPEN)
-        transMarker = pP.applyTransformation(
+        transMarker = iO.applyTransformation(
             transMarker, dilateKernel, cv2.MORPH_DILATE)
-        NOTMarker = inA.notOpetation(transMarker)
+        NOTMarker = iO.notOpetation(transMarker)
         # Append marker to marker list
         listOfNOTMarkers.append(NOTMarker)
         if extendedProcess:
@@ -61,11 +65,12 @@ def oldProcess(listOfEqMarkers, extendedProcess=False):
         listOfBinMarkers = []
         listOfTransMarkers = []
     for markerEq in listOfEqMarkers:
-        markerBin = pP.contourBinarizationOtsu(
-            markerEq, 3, 3, 45, 3, Gs=0, inverse=False, mean=True)
-        markerMasked = inA.andOperation(markerBin, mask)
-        markerTrans = inA.erosionDilation(markerMasked, 3)
-        markerNot = cv2.bitwise_not(markerTrans)
+        markerGray = cT.BGR2gray(markerEq)
+        markerBlur = pP.gaussian(markerGray, k=3, s=0)
+        markerBin = bZ.adapBina(markerBlur, 85, 2, mean=True)
+        markerMasked = iO.andOperation(markerBin, mask)
+        markerTrans = iO.erosionDilation(markerMasked, 3)
+        markerNot = iO.notOpetation(markerTrans)
         listOfNOTMarkers.append(markerNot)
         if extendedProcess:
             listOfBinMarkers.append(markerBin)

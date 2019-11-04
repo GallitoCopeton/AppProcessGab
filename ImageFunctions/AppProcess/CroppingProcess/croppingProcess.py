@@ -1,5 +1,4 @@
 import os
-import sys
 
 import cv2
 
@@ -7,6 +6,10 @@ from ImageFunctions.ImageProcessing import perspective as pPe
 from ImageFunctions.ImageProcessing import preProcessing as pP
 from ImageFunctions.ImageProcessing import sorts as srt
 from ImageFunctions.ImageProcessing import indAnalysis as inA
+from ImageFunctions.ImageProcessing import colorTransformations as cT
+from ImageFunctions.ImageProcessing import binarizations as bZ
+from ImageFunctions.ImageProcessing import imageOperations as iO
+from ImageFunctions.ImageProcessing import contours as ctr
 
 scriptPath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(scriptPath)
@@ -15,19 +18,21 @@ mask = inA.readMask(url='../../../Imagenes/mask_inv.png')
 
 
 def getEqTestSite(image):
-    return pP.equalizeHistogram(getNonEqTestSite(image))
+    return pP.adapHistogramEq(getNonEqTestSite(image))
 
 
 def getNonEqTestSite(image):
-    testResized = pP.resizeImg(image, 728)
-    testBin = pP.contourBinarization(
-        testResized, 3, 7, 85, 2, inverse=True, mean=False)
-    cardContours = pP.findTreeContours(testBin)
+    testResized = iO.resizeImg(image, 728)
+    testGray = cT.BGR2gray(testResized)
+    testBlur = pP.gaussian(testGray, k=3, s=0)
+    testBlur = pP.median(testBlur, 7)
+    testBin = bZ.adapBinaInverse(testBlur, 85, 2, mean=False)
+    cardContours = ctr.findTreeContours(testBin)
     for contour in cardContours:
         orderedContour = srt.sortPoints(contour)
         cardBin = pPe.perspectiveTransform(
             testBin, orderedContour, -5, binary=True)
-        qrAndTestSiteContours = pP.findExternalContours(cardBin)
+        qrAndTestSiteContours = ctr.findExternalContours(cardBin)
         if len(qrAndTestSiteContours) == 2:
             card = pPe.perspectiveTransform(
                 testResized, orderedContour, -5)
@@ -49,17 +54,16 @@ def getNonEqTestSite(image):
 
 
 def getMarkers(testSite):
-    height, width = testSite.shape[:2]
-    markersContours = pP.findTreeContours(pP.contourBinarization(
-        testSite, 3, 7, 85, 2, mean=False), 115000)
+    testSiteGray = cT.BGR2gray(testSite)
+    testSiteBlur = pP.gaussian(testSiteGray, k=3, s=0)
+    testSiteBlur = pP.median(testSiteBlur, 7)
+    testSiteBin = bZ.adapBinaInverse(testSiteBlur, 85, 2, mean=False)
+    markersContours = ctr.findTreeContours(testSiteBin, 115000)
     if len(markersContours) == 5 or len(markersContours) == 7:
         markersContours = markersContours[1:]
-    markersEq = []
     markers = []
     if(len(markersContours) == 4 or len(markersContours) == 6):
         srt.sortTests(markersContours)
-        for i, markerContour in enumerate(markersContours):
-            marker = pPe.getIndTest(testSite, markerContour)
-            markers.append(marker)
-    markers = inA.resizeAll(markers)
+        markers = iO.resizeAll([pPe.getIndTest(testSite, markerContour)
+                                for markerContour in markersContours])
     return markers
