@@ -1,79 +1,62 @@
 import numpy as np
-import pandas as pd
-from sklearn.metrics import confusion_matrix, classification_report
-from sklearn.model_selection import (GridSearchCV, cross_val_score,
-                                     train_test_split)
-from sklearn.preprocessing import (
-    LabelBinarizer, LabelEncoder, OneHotEncoder, StandardScaler)
+from sklearn.model_selection import GridSearchCV
 
+import machineLearningUtilities.dataPreparation as mlU
+from machineLearningUtilities import modelPerformance as mP
 from sklearn.svm import SVC
 # %%
-dfForTraining = pd.read_csv('../Dataframes/MoreFeatures.csv').iloc[:, 1:]
+dfForTraining = mlU.loadData('../Dataframes/estesi.csv')
 # %% Train and test set
-y = dfForTraining.loc[:, ['diagnostic']].values
-dfForTraining.pop('diagnostic')
-X = dfForTraining.iloc[:, :].values
-# %% Binarize 'P' and 'N' to 1 and 0
-lb = LabelBinarizer()
-y = lb.fit_transform(y).ravel()
+X = mlU.getFeatures(dfForTraining, 0, -1)
+y = mlU.getLabels(dfForTraining, 'diagnostic')
 # %% Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.3)
+X_train, X_test, y_train, y_test = mlU.splitData(X, y)
 # %% Feature Scaling
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.fit_transform(X_test)
+X_train = mlU.scaleData(X_train)
+X_test = mlU.scaleData(X_test)
 # %%
-classifier = SVC(kernel='rbf', C=210, gamma=.4488888888888889)
+classifier = SVC(kernel='rbf', C=210, gamma=.00001)
 classifier.fit(X_train, y_train)
-# %%
-y_pred = classifier.predict(X_test)
-cm = confusion_matrix(y_test, y_pred)
-print(cm)
-true_positives = cm[0, 0]
-false_positives = cm[1, 0]
-true_negatives = cm[1, 1]
-false_negatives = cm[0, 1]
-sensitivity = true_positives/(true_positives+false_negatives)
-specificity = true_negatives/(true_negatives+false_positives)
-accuracy = (true_negatives + true_positives)/len(y_test)
-print(f'''Sensitivity (How good am I at detecting positives): {sensitivity}''')
-print(f'''Specificity  (How good am I at avoiding false alarms): {specificity}''')
-print(f'''Accuracy  (Ratio of correct and total preds): {accuracy}''')
-# %% Kfold validation
-accuracies = cross_val_score(
-    estimator=classifier, X=X_train, y=y_train, cv=10, n_jobs=-1)
-acc_mean = accuracies.mean()
-acc_std = accuracies.std()
-print(f'Accuracy of model mean: {acc_mean}')
-print(f'Accuracy of model std: {acc_std}')
-# %% Grid search
-C = np.linspace(300, 500, 10)
-C = [int(Ci) for Ci in C]
-gamma = np.linspace(.1, .5, 10)
-parameters = [
-    {
-        'C': C,
-        'kernel': ['rbf'],
-        'gamma': gamma
-    }]
-gridSearch = GridSearchCV(
-    estimator=classifier, param_grid=parameters, scoring='accuracy', cv=10, n_jobs=-1)
-gridSearch = gridSearch.fit(X_train, y_train.ravel())
-# Testing grid search
-bestAccuracy = gridSearch.best_score_
-bestEstimator = gridSearch.best_estimator_
-bestParams = gridSearch.best_params_
-print(f'Best accuracy: {bestAccuracy}')
-#print(f'Best estimator: {bestEstimator}')
-print(f'Best parameters: {bestParams}')
-#%% New classifier
-bestClassifier = bestEstimator
-y_pred = bestClassifier.predict(X_test)
-print(classification_report(y_test, y_pred,
-                            target_names=['Positive', 'Negative']))
+report = mP.getReport(classifier, X_train, y_train, X_test, y_test)
 #%%
-from sklearn_porter import Porter
-porter = Porter(classifier, language='java')
-output = porter.export(embed_data=True)
-print(output)
-print(porter.integrity_score())
+filePath = '../../models'
+fileName = 'K_SVM.pkl'
+
+mP.saveModel(filePath, fileName, clf)
+#%%
+# Set the parameters by cross-validation
+tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-3, 1e-4],
+                     'C': [1, 10, 100, 1000]},
+                    {'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
+
+scores = ['precision', 'recall']
+
+for score in scores:
+    print("# Tuning hyper-parameters for %s" % score)
+    print()
+
+    clf = GridSearchCV(SVC(), tuned_parameters, cv=5,
+                       scoring='%s_macro' % score)
+    clf.fit(X_train, y_train)
+
+    print("Best parameters set found on development set:")
+    print()
+    print(clf.best_params_)
+    print()
+    print("Grid scores on development set:")
+    print()
+    means = clf.cv_results_['mean_test_score']
+    stds = clf.cv_results_['std_test_score']
+    for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+        print("%0.3f (+/-%0.03f) for %r"
+              % (mean, std * 2, params))
+    print()
+
+    print("Detailed classification report:")
+    print()
+    print("The model is trained on the full development set.")
+    print("The scores are computed on the full evaluation set.")
+    print()
+    y_true, y_pred = y_test, clf.predict(X_test)
+    mP.getReport(clf, X_train, y_train, X_test, y_true)
+    print()

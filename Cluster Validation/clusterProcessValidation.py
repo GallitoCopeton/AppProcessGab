@@ -1,25 +1,38 @@
 # %%
 import random
 import re
+import os
 
 import pymongo
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
 
 from ReadImages import readImage as rI
 from ShowProcess import showProcesses as sP
 from ImageProcessing import indAnalysis as inA
 from ImageProcessing import imageOperations as iO
+import qrQuery
+from machineLearningUtilities import modelPerformance as mP
 # %%
-URI = 'mongodb://validationUser:85d4s32D2%23diA@idenmon.zapto.org:888/findValidation?authSource=findValidation'
-CLIENT = pymongo.MongoClient(URI)
-imagesCollection = CLIENT.findValidation.images
+URI = 'mongodb+srv://findOnlyReadUser:RojutuNHqy@clusterfinddemo-lwvvo.mongodb.net/datamap?retryWrites=true'
+collectionNameImages = 'imagestotals'
+dbNameImages = 'datamap'
+collectionImages = qrQuery.getCollection(URI, dbNameImages, collectionNameImages)
 regx = re.compile("^102")
-query = {'fileName': regx}
+query = {'count': 0}
+query = {'fileName': '102190300100155'}
+#%%
+scriptPath = re.sub(r'\\', '/', os.path.dirname(os.path.realpath(__file__)))
+filePath = '/'.join([scriptPath, '../ML algorithms/models'])
+fileName = 'RandomForestClassifier.pkl'
+model = mP.loadModel(filePath, fileName)
 # %%
-images = rI.customQuery(imagesCollection, query, limit=1)
-random.shuffle(images)
-# %%
+
+images = rI.customQuery(collectionImages, query, limit=6, order=-1)
 for image in images:
-    _, _, _, notMarkers = sP.showClusterProcess(image['file'], 3, 2, (10, 9), True)
-    for marker in notMarkers:
-        analysis = inA.deepQuadrantAnalysis(iO.notOperation(marker))
-# %%
+    m = sP.showClusterProcess(image['file'], 3, 20, (8, 9), True)
+    if m:
+        for marker in m[3]:
+            values = np.array(list(inA.deepQuadrantAnalysis(iO.notOperation(marker)).values())).reshape(1, -1)
+        

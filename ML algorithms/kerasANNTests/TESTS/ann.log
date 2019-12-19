@@ -1,0 +1,487 @@
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.4
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.1
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.4
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.1
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.4
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.003
+    dropout: 0.09
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.4
+    features: 21
+    outputNeurons: 1
+    nSamples: 1500
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.002
+    dropout: 0.1
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: True
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 1
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 4
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 1.2
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.1
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.0001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.1
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.0001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.01
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.15
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.0001
+    dropout: 0.15
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.3
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.0001
+    dropout: 0.15
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 3 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 2 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.5
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 26
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 3
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 3
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Inputs:
+    alpha: 0.8
+    features: 3
+    outputNeurons: 1
+    nSamples: 1583
+    activations: ['relu', 'relu', 'sigmoid']
+    l2: None
+    l1: 0.001
+    dropout: 0.2
+    batchNorm: False
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+INFO:machineLearningUtilities.nnUtils:Starting loop...
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Input layer done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Hidden layer no. 1 done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
+DEBUG:machineLearningUtilities.nnUtils:Output layer done.
