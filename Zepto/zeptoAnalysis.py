@@ -28,7 +28,7 @@ dateQuery = {'createdAt': {
     '$lt': startDate, '$gte': finishDate
 }}
 #%%
-dataRecords = dataCollection.find({}, limit=200).sort('_id', -1)
+dataRecords = dataCollection.find({}, limit=10).sort('_id', -1)
 markerNames = ['ESAT6', 'CFP10', 'RV1681', 'CTR']
 iterables = [markerNames, ['nBlobs', 'value', 'totalArea', 'count','diagnostic']]
 index = pd.MultiIndex.from_product(iterables, names=['Protein', 'Info'])
@@ -43,7 +43,7 @@ for i, document in enumerate(dataRecords):
     imageQuery = {'fileName': document['qrCode'], 'count': document['count']}
     imagesCount = qrQuery.getDocumentCount(imagesCollection, imageQuery)
     if imagesCount == 0:
-        
+
 #        print('No existe imagen')
         continue
     image = cT.BGR2RGB(rI.customQuery(imagesCollection, imageQuery)[0]['file'])
@@ -65,7 +65,7 @@ for i, document in enumerate(dataRecords):
             value = markerRegister['analysisDetails'][2]['value']
             diagnostic = markerRegister['analysisDetails'][2]['diagnostic']
             totalArea = 0
-            try: 
+            try:
                 totalArea = markerRegister['analysisDetails'][2]['totalArea']
             except:
                 quadrants = inA.imageQuadrantSplit(iO.notOperation(marker))
@@ -99,9 +99,8 @@ for i, document in enumerate(dataRecords):
 #    except:
 #        continue
 fullDf = pd.concat(fullDf)
+fullDf.set_index('qrCode', inplace=True)
 #%%
-
-
 fullDf.to_excel('20 registers.xlsx')
 
 
