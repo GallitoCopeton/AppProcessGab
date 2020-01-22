@@ -1,0 +1,29 @@
+{
+    "connections": {
+        "zepto": {
+            "URI": "mongodb://validationUser:85d4s32D2%23diA@idenmon.zapto.org:888/findValidation?authSource=findValidation",
+            "databaseName": "findValidation",
+            "collections": {
+                "imagesCollectionName": "imagestotals",
+                "dataCollectionName": "registerstotals",
+                "markersCollectionName": "markerTotals"
+            }
+        },
+        "zapto": {
+            "URI": "mongodb://findOnlyReadUser:RojutuNHqy@idenmon.zapto.org:888/?authSource=prodLaboratorio",
+            "databaseName": "prodLaboratorio",
+            "collections": {
+                "imagesCollectionName": "imagestotals",
+                "dataCollectionName": "registerstotals",
+                "markersCollectionName": "markerTotals"
+            }
+        },
+        "testingZapto": {
+            "URI": "mongodb://findUser:85d4s32D2%23diA@idenmon.zapto.org:888/?authSource=testerSrv",
+            "databaseName": "testerSrv",
+            "collections": {
+                "markersCollectionName": "cleanMarkerTotals"
+            }
+        }
+    }
+}

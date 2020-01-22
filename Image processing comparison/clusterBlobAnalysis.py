@@ -41,7 +41,7 @@ for imageNumber, imageDict in enumerate(imageDetails):
     _id = imageDict['_id']
     print(qrCode)
     try:
-        _, _, _, notMarkers = sP.showClusterProcess(imageDict['image'], 3, 25, (8, 9), True)
+        _, _, _, notMarkers = sP.showClusterProcess(imageDict['image'], 3, 6, (8, 9), True)
     except:
         print(f'Error ocurred with register _id: {_id}')
     imageName = f'{_id}-{qrCode}-{count}'
@@ -71,5 +71,3 @@ for imageNumber, imageDict in enumerate(imageDetails):
     resultsDf = pd.DataFrame.from_records([results], columns=columns)
     df = df.append(resultsDf)
 df.set_index('QR', inplace=True)
-#%%
-dfESAT = df[(df['ESAT6'] > 25) & (df['Control'] < 25)]
