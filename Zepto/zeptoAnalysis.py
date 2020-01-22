@@ -1,109 +1,165 @@
-#%%
+# %%
+import datetime
+import json
+import os
+import re
+
 import cv2
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 import qrQuery
-import datetime
-from ReadImages import readImage as rI
+import ShowProcess.showProcesses as sP
 from AppProcess.CroppingProcess import croppingProcess as cP
-from AppProcess.MarkerProcess import markerProcess as mP
+from AppProcess.MarkerProcess import markerProcess
+from ImageProcessing import binarizations as bZ
 from ImageProcessing import colorTransformations as cT
 from ImageProcessing import imageOperations as iO
 from ImageProcessing import indAnalysis as inA
-import ShowProcess.showProcesses as sP
-#%%
-URI = 'mongodb://validationUser:85d4s32D2%23diA@idenmon.zapto.org:888/findValidation?authSource=findValidation'
-dbName = 'findValidation'
-collectionRegistersName = 'registerstotals'
-collectionImagesName = 'imagestotals'
-imagesCollection = qrQuery.getCollection(URI, dbName, collectionImagesName)
-dataCollection = qrQuery.getCollection(URI, dbName, collectionRegistersName)
-todaysDate = datetime.datetime.now()
-startDay = 0
-finishDay = 1
-startDate = todaysDate - datetime.timedelta(days=startDay)
-finishDate = startDate - datetime.timedelta(days=finishDay-startDay)
-dateQuery = {'createdAt': {
-    '$lt': startDate, '$gte': finishDate
-}}
-#%%
-dataRecords = dataCollection.find({}, limit=10).sort('_id', -1)
-markerNames = ['ESAT6', 'CFP10', 'RV1681', 'CTR']
-iterables = [markerNames, ['nBlobs', 'value', 'totalArea', 'count','diagnostic']]
-index = pd.MultiIndex.from_product(iterables, names=['Protein', 'Info'])
+from ReadImages import readImage as rI
+# %%
+with open('../Database connections/connections.json') as jsonFile:
+    connections = json.load(jsonFile)['connections']
+# %%
+# Real: base con diagnósticos reales Zepto: base de pruebas de Zeptometrix Clean: base con marcadores seleccionados
+zeptoConnection = connections['zepto']
+zeptoImagesCollection = qrQuery.getCollection(
+    zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['imagesCollectionName'])
+zeptoDataCollection = qrQuery.getCollection(
+    zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['dataCollectionName'])
+# %%
+# Image processing tools
+mask = bZ.otsuBinarize(markerProcess.fullMask)
+mask = iO.applyTransformation(mask, np.ones((3, 3)), cv2.MORPH_ERODE, 2)
+k = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
 kColors = 3
-attempts = 2
-fullDf = []
-for i, document in enumerate(dataRecords):
-    qr = document['qrCode']
-    count = document['count']
-    device = document['macaddress']
-#    print(f'Image {i+1} QR {qr} count {count} device {device}')
-    imageQuery = {'fileName': document['qrCode'], 'count': document['count']}
-    imagesCount = qrQuery.getDocumentCount(imagesCollection, imageQuery)
-    if imagesCount == 0:
+attempts = 6
 
-#        print('No existe imagen')
+# Info of the markers we want to analyze
+features2Extract = ['nBlobs', 'totalArea', 'fullBlobs', 'bigBlobs', 'medBlobs', 'smallBlobs', 'q0HasBlob',
+                    'q1HasBlob', 'q2HasBlob', 'q3HasBlob', 'noise', 'distance', 'distanceBetweenPoints', 'diagnostic']
+# Markers for table
+markerNames = ['ESAT6', 'RV1681', 'CFP10', 'Control']
+# Table's columns
+iterables = [markerNames, features2Extract]
+index = pd.MultiIndex.from_product(iterables, names=['Protein', 'Info'])
+# Query
+limit = 3
+zeptoTests = zeptoImagesCollection.find().limit(limit)
+
+# Image decoder
+
+
+def fixImage(image): return iO.resizeImg(rI.readb64(image['file']), 728)
+
+
+markersDict = {}
+for test in zeptoTests:
+    qr = test['fileName']
+    count = test['count']
+    image = fixImage(test)
+    try:
+        testSite = cP.getTestArea(image)
+        markerImages = cP.getMarkers(testSite)
+    except:
         continue
-    image = cT.BGR2RGB(rI.customQuery(imagesCollection, imageQuery)[0]['file'])
-    try:
-        testSite = cP.getNonEqTestSite(image)
-    except Exception as e:
-        print(e)
-    try:
-        markers = cP.getMarkers(testSite)
-    except Exception as e:
-        print(e)
-    markersNot = mP.clusteringProcess(
-        markers, kColors, attempts, extendedProcess=False)
-    markersInfo = []
-    dfs = []
-    try:
-        for markerRegister, marker in zip(document['marker'], markersNot):
-            nBlobs = markerRegister['analysisDetails'][2]['blobQty']
-            value = markerRegister['analysisDetails'][2]['value']
-            diagnostic = markerRegister['analysisDetails'][2]['diagnostic']
-            totalArea = 0
-            try:
-                totalArea = markerRegister['analysisDetails'][2]['totalArea']
-            except:
-                quadrants = inA.imageQuadrantSplit(iO.notOperation(marker))
-                for nQuadrant, q in enumerate(quadrants):
-                    sideOfImage = q[0].shape[0]
-                    _, contours, _ = cv2.findContours(
-                        q, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                    if len(contours) > 0 and len(contours[0]) >= 4:
-                        for nContour, contour in enumerate(contours):
-                            if inA.blobValidation(contour, nQuadrant, sideOfImage):
-                                totalArea += cv2.contourArea(contour)/490 * 100
-            markersInfo += [nBlobs, value, totalArea, count, diagnostic]
-            if len(markersInfo) != 6:
-                continue
-        df = pd.DataFrame(np.array(markersInfo).reshape(1, len(markersInfo)), columns=index)
-    except Exception as e:
-        print(e)
-        continue
-    df['qrCode'] = qr
-    df['device'] = device
-    cols = list(df)
-    # move the column to head of list using index, pop and insert
-    cols.insert(0, cols.pop(cols.index(('qrCode', ''))))
-    # use ix to reorder
-    df = df.loc[:, cols]
-    fullDf.append(df)
-#    try:
-#        mergedMarkers = inA.mergeQuadrants(markersNot)
-    sP.showImage(testSite, figSize=(6,6))
-#        sP.showImage(mergedMarkers, figSize=(4,4))
-#    except:
-#        continue
-fullDf = pd.concat(fullDf)
-fullDf.set_index('qrCode', inplace=True)
-#%%
-fullDf.to_excel('20 registers.xlsx')
+    register = zeptoDataCollection.find_one({'qrCode': qr, 'count': count})
+    for i, markerInfo in enumerate(zip(markerImages, register['marker'])):
+        markerImage, markerRegister = markerInfo
+        name = markerRegister['name']
+        try:
+            diagnostic = markerRegister['result'].upper()
+            diagnostic = 1 if diagnostic == 'Positive' else 0
+        except Exception:
+            continue
+        # Fourier processing
+        fourierMarker = markerProcess.fourierProcess([markerImage])[0]
+        markerGray = cT.BGR2gray(markerImage)
+        noise = cv2.subtract(np.float32(markerGray),
+                             fourierMarker, dtype=cv2.CV_32F).sum()
+        # Blood only extraction for agglutination processing
+        processedMarkers = markerProcess.clusteringProcess(
+            [markerImage], 3, 6, True)
+        clusteredMarker = processedMarkers[-1][0]
+        reconMarker = processedMarkers[1][0]
+        uniqueValues = np.unique(
+            reconMarker.reshape(-1, 1), axis=0)
+        reconMarker[reconMarker[:, :] != uniqueValues[1]] = 0
+        reconMarker = iO.applyTransformation(reconMarker, k, cv2.MORPH_OPEN, 1)
+        reconMarker = iO.applyTransformation(
+            reconMarker, k, cv2.MORPH_DILATE, 1)
+        reconMarkerMask = bZ.otsuBinarize(
+            iO.andOperation(reconMarker, mask), 1)
+        reconMarkerMask = iO.applyTransformation(
+            reconMarkerMask, k, cv2.MORPH_DILATE, 1)
+        bloodMasked = markerImage.copy()
+        bloodMasked = bloodMasked[:, :, 0]
+        bloodMasked = iO.andOperation(bloodMasked, reconMarkerMask)
+        laplacian = cv2.Laplacian(bloodMasked, cv2.CV_64F)
+        laplacian[laplacian[:, :] > 60] = 0
+        lapBina = bZ.simpleBinarization(laplacian, 1)
+        aglutinQuad = inA.imageQuadrantSplit(lapBina)
+        qRects = []
+        areas = 0
+        distances = 0
+        distancesBetweenPoints = 0
+        for nQ, q in enumerate(aglutinQuad):
+            q = q.astype(np.uint8)
+            qCoords = []
+            rows = q.shape[0]
+            cols = q.shape[1]
+            for row in range(0, rows):
+                for col in range(0, cols):
+                    if q[col, row] > 0:
+                        qCoords.append((col, row))
+            xCoords = [x[0] for x in qCoords]
+            yCoords = [y[1] for y in qCoords]
+            dx = np.diff(xCoords).std()
+            dy = np.diff(yCoords).std()
+            distancesBetweenPoints += sum(
+                inA.getDistanceBetweenPoints(qCoords))
+            _, cnts, _ = cv2.findContours(
+                q, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            for c in cnts:
+                # http://docs.opencv.org/3.1.0/dd/d49/tutorial_py_contour_features.html
+                if(cv2.contourArea(c) > 2):
+                    areas += cv2.contourArea(c)
+                    distances += inA.getContourDistance(c, nQ)
+        if qr not in markersDict.keys():
+            markersDict[qr] = {}
+        markerNot = markerProcess.clusteringProcess(
+            [markerImage], kColors, attempts, extendedProcess=False)[0]
+        sP.showImage(fourierMarker, figSize=(3, 3), title=name)
+        features = list(inA.extractFeatures(
+            markerNot, features2Extract).values())
+        features.append(noise)
+        features.append(distances)
+        features.append(distancesBetweenPoints)
+        features.append(diagnostic)
+        if count not in markersDict[qr].keys():
+            markersDict[qr][count] = {}
+        markersDict[qr][count][name] = features
 
-
-
-
-
+realFullDf = []
+for qr in markersDict.keys():
+    for count in markersDict[qr].keys():
+        markerInfoFull = []
+        for proteinName in markersDict[qr][count].keys():
+            markerInfoFull.append(markersDict[qr][count][proteinName])
+        markerInfoFull = np.array(markerInfoFull).ravel()
+        df = pd.DataFrame(markerInfoFull.reshape(
+            1, len(markerInfoFull)), columns=index)
+        realFullDf.append(df)
+realFullDf = pd.concat(realFullDf)
+# %% EXCEL CREATION
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+dfsFolder = '../Feature Tables'
+todaysDate = datetime.datetime.now()
+dateString = re.sub(r':', '_', todaysDate.ctime())[4:-5]
+currentFolder = os.path.dirname(os.path.realpath(__file__))
+folderPath = f'{currentFolder}/{dfsFolder}'
+qrQuery.makeFolders(folderPath)
+infoCsvName = '/'.join([folderPath, f'Dataframe de {dateString}.xlsx'])
+realFullDf.to_excel(infoCsvName, index=True)
