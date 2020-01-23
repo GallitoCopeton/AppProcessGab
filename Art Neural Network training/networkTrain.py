@@ -29,6 +29,7 @@ X_test = sc.transform(X_test)
 means = sc.mean_
 variances = sc.var_
 # %% Baseline model
+todayDatetime = datetime.datetime.now()
 alpha = 8
 nFeatures = X.shape[1]
 outputNeurons = 1
@@ -47,9 +48,7 @@ modelHistory = model.fit(X_train, y_train, batch_size=500,
 nnU.plot_history([('Base model', modelHistory)])
 yPred = nnU.performance(model, X_test, y_test)
 # %%
-todayDatetime = todaysDate = datetime.datetime.now()
-dateString = re.sub(r':', '_', todaysDate.ctime())[4:-5]
-
+dateString = re.sub(r':', '_', todayDatetime.ctime())[4:-5]
 currentNNFolder = f'ANN_{yPred[0].round(2)} date {dateString}'
 nnFilename = currentNNFolder+'.pkl'
 currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
