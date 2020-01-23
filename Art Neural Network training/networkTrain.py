@@ -1,5 +1,6 @@
 # %%
 import datetime
+import json
 import re
 
 import pandas as pd
@@ -53,11 +54,16 @@ currentNNFolder = f'ANN_{yPred[0].round(2)} date {dateString}'
 nnFilename = currentNNFolder+'.pkl'
 currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
 qrQuery.makeFolders(currentNNPath)
-nnInfoFileName = 'nnInfo.txt'
-nnInfoFilePath = '/'.join([currentNNPath, nnInfoFileName])
-joinedMeans = ', '.join([str(mean) for mean in means])
-joinedVars = ', '.join([str(var) for var in variances])
-joinedFeatures = ', '.join(X.columns)
-with open(nnInfoFilePath, 'w') as infoFile:
-    infoFile.write(f'Means: {joinedMeans}\nVariances: {joinedVars}\nFeatures used: {joinedFeatures}')
+nnInfoJsonFileName = 'nnInfo.json'
+nnInfoJsonFilePath = '/'.join([currentNNPath, nnInfoJsonFileName])
+joinedMeans = ','.join([str(mean) for mean in means])
+joinedVars = ','.join([str(var) for var in variances])
+joinedFeatures = ','.join(X.columns)
+outputFeatures = {
+            'means': joinedMeans,
+            'variances': joinedVars,
+            'features': joinedFeatures
+        }
+with open(nnInfoJsonFilePath, 'w') as jsonOut:
+    json.dump(outputFeatures, jsonOut)
 mP.saveModel(currentNNPath, nnFilename, model)
