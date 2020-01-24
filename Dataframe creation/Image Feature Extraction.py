@@ -6,9 +6,9 @@ import json
 import pandas as pd
 
 import qrQuery
-from ImageProcessing import imageOperations as iO
-from ImageProcessing import indAnalysis as inA
-from ReadImages import readImage as rI
+from IF2.Processing import imageOperations as iO
+from IF2.Processing import indAnalysis as inA
+from IF2.ReadImage import readImage as rI
 
 with open('../Database connections/connections.json') as jsonFile:
     connections = json.load(jsonFile)['connections']
