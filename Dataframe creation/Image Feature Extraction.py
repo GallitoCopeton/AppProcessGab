@@ -18,7 +18,7 @@ zaptoImagesCollection = qrQuery.getCollection(
     zaptoConnection['URI'], zaptoConnection['databaseName'], zaptoConnection['collections']['markersCollectionName'])
 # %%
 query = {'diagnostic': {'$ne': None}}
-limit = 10
+limit = 0
 markers = zaptoImagesCollection.find(query).limit(limit)
 markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
                 {'diagnostic': marker['diagnostic'],
@@ -29,11 +29,9 @@ markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
 markerImages = [info[0] for info in markersInfo]
 markersInfo = [info[1] for info in markersInfo]
 # %%
-features2Extract = ['nBlobs', 'totalArea',
-                    'fullBlobs', 'bigBlobs', 'medBlobs', 'smallBlobs',
-                    'q0HasBlob', 'q1HasBlob', 'q2HasBlob', 'q3HasBlob',
+features2Extract = ['totalArea',
+                    'fullBlobs', 'bigBlobs', 'medBlobs',
                     'noise',
-                    'distance',
                     'distanceBetweenPoints',
                     'diagnostic']
 registerCount = len(markersInfo)

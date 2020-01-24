@@ -1,0 +1,2 @@
+Number of tests included: 1200
+Features used: nBlobs, totalArea, fullBlobs, bigBlobs, medBlobs, smallBlobs, q0HasBlob, q1HasBlob, q2HasBlob, q3HasBlob, noise, distance, distanceBetweenPoints, diagnostic

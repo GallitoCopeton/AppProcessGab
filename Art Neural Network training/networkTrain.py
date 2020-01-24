@@ -12,16 +12,18 @@ from machineLearningUtilities import modelPerformance as mP
 from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
-tablePath = '../Feature Tables'
-tableName = 'Dataframe de Jan 20 09_37_04.xlsx'
-fullTablePath = '/'.join([tablePath, tableName])
+tablesPath = '../Feature Tables'
+tableFolder = 'DF Jan 24 16_47_20'
+ext = '.xlsx'
+fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
 # %% Train and test set
 df = pd.read_excel(fullTablePath)
+df.dropna(inplace=True)
 X = mlU.getFeatures(df, 0, -1)
 y = mlU.getLabels(df, 'diagnostic')
 # %% Split data
-X_train, X_test, y_train, y_test = mlU.splitData(X, y, .2)
+X_train, X_test, y_train, y_test = mlU.splitData(X, y, .3)
 # %% Feature Scaling
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
@@ -30,21 +32,20 @@ means = sc.mean_
 variances = sc.var_
 # %% Baseline model
 todayDatetime = datetime.datetime.now()
-alpha = 8
+alpha = 3
 nFeatures = X.shape[1]
 outputNeurons = 1
 nSamples = len(X_train)
 activations = ['relu', 'relu', 'sigmoid']
-l1 = 0.7
-l2 = 0.7
-dropout = 0.5
+l1 = 0.01
+dropout = 0.0
 batchNorm = False
 model = nnU.createANN(alpha=alpha, features=nFeatures, outputNeurons=outputNeurons, nSamples=nSamples,
-                      activations=activations, l1=l1, l2=l2, dropout=dropout, batchNorm=batchNorm)
-model.compile(optimizer='adam', loss='binary_crossentropy',
+                      activations=activations, l1=l1, dropout=dropout, batchNorm=batchNorm)
+model.compile(optimizer='nadam', loss='binary_crossentropy',
               metrics=['accuracy', 'binary_crossentropy'])
-modelHistory = model.fit(X_train, y_train, batch_size=500,
-                         epochs=800, verbose=2, validation_data=(X_test, y_test))
+modelHistory = model.fit(X_train, y_train, batch_size=300,
+                         epochs=1600, verbose=2, validation_data=(X_test, y_test))
 nnU.plot_history([('Base model', modelHistory)])
 yPred = nnU.performance(model, X_test, y_test)
 # %%

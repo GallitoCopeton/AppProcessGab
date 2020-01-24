@@ -1,0 +1,2 @@
+Number of tests included: 3168
+Features used: totalArea, fullBlobs, noise, distanceBetweenPoints, diagnostic
