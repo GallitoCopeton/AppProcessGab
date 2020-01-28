@@ -7,6 +7,7 @@ import pandas as pd
 import qrQuery
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+import seaborn as sns
 
 import machineLearningUtilities.dataPreparation as mlU
 from machineLearningUtilities import modelPerformance as mP
@@ -14,7 +15,7 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Jan 24 15_44_21'
+tableFolder = 'DF Jan 28 08_35_03'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
@@ -24,6 +25,7 @@ todayDatetime = datetime.datetime.now()
 # %% Train and test set
 df = pd.read_excel(fullTablePath)
 df.dropna(inplace=True)
+sns.countplot(x='diagnostic', data=df)
 X = mlU.getFeatures(df, 0, -1)
 y = mlU.getLabels(df, 'diagnostic')
 # %% Split data
@@ -41,11 +43,11 @@ dateString = re.sub(r':', '_', todayDatetime.ctime())[4:-5]
 currentNNFolder = f'ANN_date {dateString}'
 currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
 qrQuery.makeFolders(currentNNPath)
-alpha = 10
+alpha = 1
 nFeatures = X.shape[1]
 outputNeurons = 1
 nSamples = len(X_train)
-activations = ['relu', 'relu']
+activations = ['relu', 'relu', 'relu']
 l1 = 0.0001
 l2 = None
 dropout = 0.5
