@@ -13,7 +13,7 @@ from IF2.ReadImage import readImage as rI
 with open('../Database connections/connections.json') as jsonFile:
     connections = json.load(jsonFile)['connections']
 # %%
-zaptoConnection = connections['testingZapto']
+zaptoConnection = connections['zapto']
 zaptoImagesCollection = qrQuery.getCollection(
     zaptoConnection['URI'], zaptoConnection['databaseName'], zaptoConnection['collections']['markersCollectionName'])
 # %%
@@ -29,10 +29,10 @@ markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
 markerImages = [info[0] for info in markersInfo]
 markersInfo = [info[1] for info in markersInfo]
 # %%
-features2Extract = ['nBlobs',
-                    'totalArea',
-                    'fullBlobs', 'bigBlobs', 'medBlobs', 'smallBlobs',
+features2Extract = ['totalArea',
                     'noise',
+                    'fullBlobs', 'bigBlobs', 'medBlobs', 'smallBlobs',
+                    'q0HasBlob', 'q1HasBlob', 'q2HasBlob', 'q3HasBlob',
                     'distanceBetweenPoints',
                     'diagnostic']
 registerCount = len(markersInfo)

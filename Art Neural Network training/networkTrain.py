@@ -15,7 +15,7 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Jan 28 08_35_03'
+tableFolder = 'DF Jan 28 12_27_10'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
@@ -50,9 +50,9 @@ nSamples = len(X_train)
 activations = ['relu', 'relu', 'relu']
 l1 = 0.0001
 l2 = None
-dropout = 0.5
+dropout = 0.3
 batchNorm = False
-epochs = 800
+epochs = 1200
 batch_size = 2**18
 optimizer = 'adam'
 loss = 'binary_crossentropy'
