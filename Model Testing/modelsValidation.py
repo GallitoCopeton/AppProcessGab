@@ -14,7 +14,7 @@ from IF2.ReadImage import readImage as rI
 with open('../Database connections/connections.json') as jsonFile:
     connections = json.load(jsonFile)['connections']
 #%% Validation database
-zeptoConnection = connections['zapto']
+zeptoConnection = connections['zepto']
 zaptoImagesCollection = qrQuery.getCollection(
     zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['markersCollectionName'])
 #%% Model loading
@@ -60,7 +60,9 @@ for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
             modelPerformance[modelName]['tN'] = 0
             modelPerformance[modelName]['fP'] = 0
             modelPerformance[modelName]['fN'] = 0
-        modelPred = 1 if model.predict(vals)[0][0] > 70 else 0
+        modelPred = 1 if model.predict(vals)[0][0] > .70 else 0
+        print(f'REAL DIAGNOSTIC: {diagnostic}')
+        print(f'Model {modelName} prediction: {modelPred}')
         if modelPred == diagnostic:
             if diagnostic == 1:
                 modelPerformance[modelName]['tP'] += 1
@@ -68,8 +70,17 @@ for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
                 modelPerformance[modelName]['tN'] += 1
         else:
             if diagnostic == 1:
-                modelPerformance[modelName]['fP'] += 1
-            else:
                 modelPerformance[modelName]['fN'] += 1
+                 
+            else:
+                modelPerformance[modelName]['fP'] += 1
+for modelName in modelFolders:
+    modelPerformance[modelName]['accuracy'] = (modelPerformance[modelName]['tP'] + modelPerformance[modelName]['tN']) / len(markersInfo)
+    modelPerformance[modelName]['recall'] = modelPerformance[modelName]['tP'] / (modelPerformance[modelName]['tP'] + modelPerformance[modelName]['fN'])
+    modelPerformance[modelName]['precision'] = modelPerformance[modelName]['tP'] / (modelPerformance[modelName]['tP'] + modelPerformance[modelName]['fP'])
+    modelPerformance[modelName]['f1'] = 2 * ((modelPerformance[modelName]['precision'] * modelPerformance[modelName]['recall']) / (modelPerformance[modelName]['precision'] + modelPerformance[modelName]['recall']))
+
+
+#        print(modelPerformance)
 #    sI(markerImage, title=diagnostic)
         

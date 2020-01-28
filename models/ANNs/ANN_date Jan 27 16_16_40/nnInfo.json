@@ -1,0 +1,138 @@
+{
+    "1": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 2,
+            "l1": 0.001,
+            "l2": 0.01,
+            "dropout": 0.5,
+            "batchNorm": false,
+            "acc": 0.7938689217758985,
+            "epochs": 200,
+            "batchSize": 256,
+            "split": 0.3,
+            "seed": 367
+        }
+    },
+    "2": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 2,
+            "l1": 0.001,
+            "l2": null,
+            "dropout": 0.2,
+            "batchNorm": false,
+            "acc": 0.7885835095137421,
+            "epochs": 200,
+            "batchSize": 256,
+            "split": 0.3,
+            "seed": 367
+        }
+    },
+    "3": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 2,
+            "l1": 0.1,
+            "l2": null,
+            "dropout": 0.2,
+            "batchNorm": false,
+            "acc": 0.7980972515856237,
+            "epochs": 200,
+            "batchSize": 64,
+            "split": 0.3,
+            "seed": 367,
+            "activations": "relu, relu"
+        }
+    },
+    "4": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 0.7,
+            "l1": 0.01,
+            "l2": null,
+            "dropout": 0.2,
+            "batchNorm": false,
+            "acc": 0.781183932346723,
+            "epochs": 200,
+            "batchSize": 1024,
+            "split": 0.3,
+            "seed": 367,
+            "activations": "relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "nSamples": 2206
+        }
+    },
+    "5": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 0.7,
+            "l1": 0.01,
+            "l2": null,
+            "dropout": 0.5,
+            "batchNorm": false,
+            "acc": 0.7959830866807611,
+            "epochs": 600,
+            "batchSize": 1024,
+            "split": 0.3,
+            "seed": 367,
+            "activations": "relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "nSamples": 2206
+        }
+    },
+    "6": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 0.7,
+            "l1": 0.01,
+            "l2": null,
+            "dropout": 0.5,
+            "batchNorm": false,
+            "acc": 0.7885835095137421,
+            "epochs": 1200,
+            "batchSize": 1024,
+            "split": 0.3,
+            "seed": 367,
+            "activations": "relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "nSamples": 2206
+        }
+    },
+    "7": {
+        "means": "20.406577103766587,0.12058023572076156,-798742136.7180417,2636.845015031218",
+        "variances": "303.5702022779221,0.18763629070638146,1263417952940723.5,184317.95697701306",
+        "features": "totalArea,fullBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 0.5,
+            "l1": 0.001,
+            "l2": null,
+            "dropout": 0.5,
+            "batchNorm": false,
+            "acc": 0.7949260042283298,
+            "epochs": 1200,
+            "batchSize": 512,
+            "split": 0.3,
+            "seed": 367,
+            "activations": "relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "nSamples": 2206
+        }
+    }
+}

@@ -6,6 +6,7 @@ import re
 import pandas as pd
 import qrQuery
 from sklearn.preprocessing import StandardScaler
+import numpy as np
 
 import machineLearningUtilities.dataPreparation as mlU
 from machineLearningUtilities import modelPerformance as mP
@@ -13,17 +14,22 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Jan 24 16_47_20'
+tableFolder = 'DF Jan 24 15_44_21'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
+iteration = 0
+iterationDict = {}
+todayDatetime = datetime.datetime.now()
 # %% Train and test set
 df = pd.read_excel(fullTablePath)
 df.dropna(inplace=True)
 X = mlU.getFeatures(df, 0, -1)
 y = mlU.getLabels(df, 'diagnostic')
 # %% Split data
-X_train, X_test, y_train, y_test = mlU.splitData(X, y, .3)
+split = .3
+seed = np.random.randint(0, 500)
+X_train, X_test, y_train, y_test = mlU.splitData(X, y, split, seed=seed)
 # %% Feature Scaling
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
@@ -31,39 +37,66 @@ X_test = sc.transform(X_test)
 means = sc.mean_
 variances = sc.var_
 # %% Baseline model
-todayDatetime = datetime.datetime.now()
-alpha = 3
+dateString = re.sub(r':', '_', todayDatetime.ctime())[4:-5]
+currentNNFolder = f'ANN_date {dateString}'
+currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
+qrQuery.makeFolders(currentNNPath)
+alpha = 10
 nFeatures = X.shape[1]
 outputNeurons = 1
 nSamples = len(X_train)
-activations = ['relu', 'relu', 'sigmoid']
-l1 = 0.01
-dropout = 0.0
+activations = ['relu', 'relu']
+l1 = 0.0001
+l2 = None
+dropout = 0.5
 batchNorm = False
+epochs = 800
+batch_size = 2**18
+optimizer = 'adam'
+loss = 'binary_crossentropy'
 model = nnU.createANN(alpha=alpha, features=nFeatures, outputNeurons=outputNeurons, nSamples=nSamples,
-                      activations=activations, l1=l1, dropout=dropout, batchNorm=batchNorm)
-model.compile(optimizer='nadam', loss='binary_crossentropy',
+                      activations=activations, l1=l1, l2=l2, dropout=dropout, batchNorm=batchNorm)
+model.compile(optimizer=optimizer, loss=loss,
               metrics=['accuracy', 'binary_crossentropy'])
-modelHistory = model.fit(X_train, y_train, batch_size=300,
-                         epochs=1600, verbose=2, validation_data=(X_test, y_test))
+modelHistory = model.fit(X_train, y_train, batch_size=batch_size,
+                         epochs=epochs, verbose=2, validation_data=(X_test, y_test))
 nnU.plot_history([('Base model', modelHistory)])
 yPred = nnU.performance(model, X_test, y_test)
-# %%
-dateString = re.sub(r':', '_', todayDatetime.ctime())[4:-5]
-currentNNFolder = f'ANN_{yPred[0].round(2)} date {dateString}'
-nnFilename = currentNNFolder+'.pkl'
-currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
-qrQuery.makeFolders(currentNNPath)
 nnInfoJsonFileName = 'nnInfo.json'
 nnInfoJsonFilePath = '/'.join([currentNNPath, nnInfoJsonFileName])
 joinedMeans = ','.join([str(mean) for mean in means])
 joinedVars = ','.join([str(var) for var in variances])
 joinedFeatures = ','.join(X.columns)
+nnFilename = str(int(datetime.datetime.timestamp(datetime.datetime.now())))+'.pkl'
+
 outputFeatures = {
             'means': joinedMeans,
             'variances': joinedVars,
-            'features': joinedFeatures
+            'features': joinedFeatures,
+            'params': {
+                    'alpha': alpha,
+                    'l1': l1,
+                    'l2': l2,
+                    'dropout': dropout,
+                    'batchNorm': batchNorm,
+                    'acc': yPred[0],
+                    'epochs': epochs,
+                    'batchSize': batch_size,
+                    'split': split,
+                    'seed': seed,
+                    'activations': ', '.join(activations),
+                    'optimizer': optimizer,
+                    'loss': loss,
+                    'trainSamples': nSamples,
+                    'nSamples': len(df),
+                    'fileName': nnFilename
+                    }
         }
+iterationDict[str(iteration)] = outputFeatures
 with open(nnInfoJsonFilePath, 'w') as jsonOut:
-    json.dump(outputFeatures, jsonOut)
+    json.dump(iterationDict, jsonOut)
+
 mP.saveModel(currentNNPath, nnFilename, model)
+iteration += 1
+# %%
+

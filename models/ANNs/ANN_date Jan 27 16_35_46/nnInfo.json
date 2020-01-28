@@ -1,0 +1,44 @@
+{
+    "0": {
+        "means": "20.360628039231848,0.12783318223028106,0.3236627379873073,0.9746146872166818,-799073977.7044424,2641.4712959353906",
+        "variances": "313.18735748602796,0.19671398123801484,0.4410266568799014,1.1543873175358723,1272947920082436.5,187029.702253555",
+        "features": "totalArea,fullBlobs,bigBlobs,medBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 0.5,
+            "l1": 0.001,
+            "l2": null,
+            "dropout": 0.5,
+            "batchNorm": false,
+            "acc": 0.8023255813953488,
+            "epochs": 1200,
+            "batchSize": 512,
+            "split": 0.3,
+            "seed": 270,
+            "activations": "relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "nSamples": 2206
+        }
+    },
+    "1": {
+        "means": "20.360628039231848,0.12783318223028106,0.3236627379873073,0.9746146872166818,-799073977.7044424,2641.4712959353906",
+        "variances": "313.18735748602796,0.19671398123801484,0.4410266568799014,1.1543873175358723,1272947920082436.5,187029.702253555",
+        "features": "totalArea,fullBlobs,bigBlobs,medBlobs,noise,distanceBetweenPoints",
+        "params": {
+            "alpha": 5,
+            "l1": 0.001,
+            "l2": null,
+            "dropout": 0.0,
+            "batchNorm": false,
+            "acc": 0.8012684989429175,
+            "epochs": 1200,
+            "batchSize": 524288,
+            "split": 0.3,
+            "seed": 270,
+            "activations": "relu, relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "nSamples": 2206
+        }
+    }
+}
