@@ -1,0 +1,2 @@
+Number of tests included: 1659
+Features used: noise, distance, distanceBetweenPoints, diagnostic
