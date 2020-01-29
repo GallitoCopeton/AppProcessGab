@@ -34,6 +34,8 @@ features2Extract = ['totalArea',
                     'fullBlobs', 'bigBlobs', 'medBlobs', 'smallBlobs',
                     'q0HasBlob', 'q1HasBlob', 'q2HasBlob', 'q3HasBlob',
                     'distanceBetweenPoints',
+                    'roc',
+                    'agl',
                     'diagnostic']
 registerCount = len(markersInfo)
 fullFeatures = []

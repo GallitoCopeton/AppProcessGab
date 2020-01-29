@@ -15,12 +15,12 @@ from IF2.ReadImage import readImage as rI
 with open('../Database connections/connections.json') as jsonFile:
     connections = json.load(jsonFile)['connections']
 #%% Validation database
-zeptoConnection = connections['zapto']
+zeptoConnection = connections['zepto']
 zaptoImagesCollection = qrQuery.getCollection(
     zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['markersCollectionName'])
 #%% Model loading
 allModelsFolder = '../Models/ANNs'
-modelFolders = ['ANN_date Jan 28 08_32_24', 'ANN_date Jan 27 16_35_46', 'ANN_date Jan 28 11_10_58', 'ANN_date Jan 28 12_27_27']
+modelFolders = ['ANN_date Jan 29 13_50_36']
 modelPaths = ['/'.join([allModelsFolder, folder]) for folder in modelFolders]
 modelsByPath = []
 modelByPathNames = []
@@ -43,7 +43,7 @@ infoPaths = ['/'.join([allModelsFolder, folder, 'nnInfo.json']) for folder in mo
 modelsInfo = [moPe.loadModelInfo(path)['0'] for path in infoPaths]
 #%% Query and data fix
 query = {'diagnostic': {'$ne': None}}
-limit = 2000
+limit = 0
 markers = zaptoImagesCollection.find(query).limit(limit)
 markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
                 {'diagnostic': marker['diagnostic'],
@@ -86,7 +86,6 @@ for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
             else:
                 if diagnostic == 1:
                     modelPerformance[name]['fN'] += 1
-                     
                 else:
                     modelPerformance[name]['fP'] += 1
     sI(markerImage, title=f'REAL DIAGNOSTIC: {diagnostic}')

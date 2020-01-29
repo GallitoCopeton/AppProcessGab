@@ -15,7 +15,7 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Jan 28 12_27_10'
+tableFolder = 'DF Jan 29 13_48_52'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
