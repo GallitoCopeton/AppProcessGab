@@ -2,6 +2,7 @@
 import math
 import json
 import os
+from bson import ObjectId
 
 import numpy as np
 
@@ -20,7 +21,7 @@ zaptoImagesCollection = qrQuery.getCollection(
     zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['markersCollectionName'])
 #%% Model loading
 allModelsFolder = '../Models/ANNs'
-modelFolders = ['ANN_date Jan 29 13_50_36']
+modelFolders = ['ANN_date Feb  4 13_48_32']
 modelPaths = ['/'.join([allModelsFolder, folder]) for folder in modelFolders]
 modelsByPath = []
 modelByPathNames = []
@@ -41,20 +42,30 @@ for modelPath in modelPaths:
 #%% Model info loading
 infoPaths = ['/'.join([allModelsFolder, folder, 'nnInfo.json']) for folder in modelFolders]
 modelsInfo = [moPe.loadModelInfo(path)['0'] for path in infoPaths]
+trainingFilesPaths = ['../Feature Tables/'+modelInfo['params']['trainingFileName']+'/dfInfo.json' for modelInfo in modelsInfo]
+idsUsedByPath = []
+for path in trainingFilesPaths:
+    with open(path) as jsonFile:
+        ids = [ObjectId(_id) for _id in json.load(jsonFile)['_idsUsed'].split(',')]
+        idsUsedByPath += (ids)
+idsUsedByPath = list(set(idsUsedByPath))
 #%% Query and data fix
-query = {'diagnostic': {'$ne': None}}
+query = {'_id': {'$nin': idsUsedByPath}, 'diagnostic': {'$ne': None}}
+
+#%% Model validation
+modelPerformance = {}
 limit = 0
 markers = zaptoImagesCollection.find(query).limit(limit)
 markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
                 {'diagnostic': marker['diagnostic'],
                  'name':  marker['marker'],
                  'qr': marker['QR'],
-                 'count': marker['count']}
+                 'count': marker['count'],
+                 '_id': marker['_id']}
                 ] for marker in markers]
 markerImages = [info[0] for info in markersInfo]
 markersInfo = [info[1] for info in markersInfo]
-#%% Model validation
-modelPerformance = {}
+#%%
 for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
     print('*'*80)
     diagnostic = inA.fixDiagnostic(markerInfo['diagnostic'])
@@ -76,7 +87,7 @@ for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
                 modelPerformance[name]['tN'] = 0
                 modelPerformance[name]['fP'] = 0
                 modelPerformance[name]['fN'] = 0
-            modelPred = 1 if model.predict(vals)[0][0] > .5 else 0
+            modelPred = 1 if model.predict(vals)[0][0] > .8 else 0
             print(f'El resultado del modelo {name} es {modelPred}')
             if modelPred == diagnostic:
                 if diagnostic == 1:

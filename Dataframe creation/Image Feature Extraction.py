@@ -17,25 +17,47 @@ zaptoConnection = connections['zapto']
 zaptoImagesCollection = qrQuery.getCollection(
     zaptoConnection['URI'], zaptoConnection['databaseName'], zaptoConnection['collections']['markersCollectionName'])
 # %%
-query = {'diagnostic': {'$ne': None}}
-limit = 0
-markers = zaptoImagesCollection.find(query).limit(limit)
+
+limit = int(3168*.80)
+query = [
+        {'$match': {'diagnostic': {'$ne': None}}},
+        {'$sample': {'size': limit}}
+         ]
+markers = zaptoImagesCollection.aggregate(query, allowDiskUse=True)
 markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
                 {'diagnostic': marker['diagnostic'],
                  'name':  marker['marker'],
                  'qr': marker['QR'],
-                 'count': marker['count']}
+                 'count': marker['count'],
+                 '_id': marker['_id']}
                 ] for marker in markers]
 markerImages = [info[0] for info in markersInfo]
 markersInfo = [info[1] for info in markersInfo]
 # %%
-features2Extract = ['totalArea',
-                    'noise',
-                    'fullBlobs', 'bigBlobs', 'medBlobs', 'smallBlobs',
-                    'q0HasBlob', 'q1HasBlob', 'q2HasBlob', 'q3HasBlob',
-                    'distanceBetweenPoints',
-                    'roc',
+features2Extract = [
+#                    'noise',
+#                    'roc',
                     'agl',
+                    'aglMean',
+#                    'distanceBetweenPoints',
+#                    'distance',
+#                    'nBlobs',
+#                    'value',
+                    'totalArea',
+#                    'anomaliesSize',
+#                    'anomaliesDistance',
+                    'fullBlobs',
+                    'bigBlobs',
+                    'medBlobs',
+                    'smallBlobs',
+#                    'q0HasBlob',
+#                    'q1HasBlob',
+#                    'q2HasBlob',
+#                    'q3HasBlob',
+#                    'q0Perimeter',
+#                    'q1Perimeter',
+#                    'q2Perimeter',
+#                    'q3Perimeter',
                     'diagnostic']
 registerCount = len(markersInfo)
 fullFeatures = []
@@ -46,6 +68,7 @@ for i, (marker, info) in enumerate(zip(markerImages, markersInfo)):
     qr = info['qr']
     count = info['count']
     diagnostic = inA.fixDiagnostic(info['diagnostic'])
+    print(diagnostic)
     features = inA.extractFeatures(marker, features2Extract)
     featureListNames = sorted(
         features.keys(), key=lambda i: features2Extract.index(i))
@@ -64,10 +87,15 @@ qrQuery.makeFolders(currentDfPath)
 dfFilePath = '/'.join([currentDfPath, dfFilename])
 fullDataframe.to_excel(dfFilePath, index=False)
 # Info txt save
-dfInfoFileName = 'dfInfo.txt'
+dfInfoFileName = 'dfInfo.json'
 dfInfoFilePath = '/'.join([currentDfPath, dfInfoFileName])
-joinedFeatures = ', '.join(fullDataframe.columns)
+joinedFeatures = ','.join(fullDataframe.columns)
 nRows = str(len(fullDataframe))
-with open(dfInfoFilePath, 'w') as infoFile:
-    infoFile.write(
-        f'Number of tests included: {nRows}\nFeatures used: {joinedFeatures}')
+joinedIds = ','.join([str(markerInfo['_id']) for markerInfo in markersInfo])
+jsonOutDict = {
+        'features': joinedFeatures,
+        'nTests': nRows,
+        '_idsUsed': joinedIds
+    }
+with open(dfInfoFilePath, 'w') as jsonOut:
+    json.dump(jsonOutDict, jsonOut)

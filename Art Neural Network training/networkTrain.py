@@ -15,7 +15,7 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Jan 29 13_48_52'
+tableFolder = 'DF Feb  4 13_48_03'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
@@ -29,7 +29,7 @@ sns.countplot(x='diagnostic', data=df)
 X = mlU.getFeatures(df, 0, -1)
 y = mlU.getLabels(df, 'diagnostic')
 # %% Split data
-split = .3
+split = .2
 seed = np.random.randint(0, 500)
 X_train, X_test, y_train, y_test = mlU.splitData(X, y, split, seed=seed)
 # %% Feature Scaling
@@ -43,17 +43,17 @@ dateString = re.sub(r':', '_', todayDatetime.ctime())[4:-5]
 currentNNFolder = f'ANN_date {dateString}'
 currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
 qrQuery.makeFolders(currentNNPath)
-alpha = 1
+alpha = 5
 nFeatures = X.shape[1]
 outputNeurons = 1
 nSamples = len(X_train)
-activations = ['relu', 'relu', 'relu']
-l1 = 0.0001
+activations = ['sigmoid', 'relu', 'relu']
+l1 = 0.01
 l2 = None
-dropout = 0.3
+dropout = 0.5
 batchNorm = False
-epochs = 1200
-batch_size = 2**18
+epochs = 500
+batch_size = 2**6
 optimizer = 'adam'
 loss = 'binary_crossentropy'
 model = nnU.createANN(alpha=alpha, features=nFeatures, outputNeurons=outputNeurons, nSamples=nSamples,
@@ -91,7 +91,8 @@ outputFeatures = {
                     'loss': loss,
                     'trainSamples': nSamples,
                     'nSamples': len(df),
-                    'fileName': nnFilename
+                    'fileName': nnFilename,
+                    'trainingFileName': tableFolder
                     }
         }
 iterationDict[str(iteration)] = outputFeatures
