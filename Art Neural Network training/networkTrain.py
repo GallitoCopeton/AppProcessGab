@@ -15,7 +15,7 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Feb  4 13_48_03'
+tableFolder = 'DF Feb  5 15_57_41'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
@@ -47,7 +47,7 @@ alpha = 5
 nFeatures = X.shape[1]
 outputNeurons = 1
 nSamples = len(X_train)
-activations = ['sigmoid', 'relu', 'relu']
+activations = ['relu', 'relu']
 l1 = 0.01
 l2 = None
 dropout = 0.5
