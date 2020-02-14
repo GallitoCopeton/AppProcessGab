@@ -21,7 +21,7 @@ zaptoImagesCollection = qrQuery.getCollection(
     zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['markersCollectionName'])
 #%% Model loading
 allModelsFolder = '../Models/ANNs'
-modelFolders = ['ANN_date Feb  4 13_48_32']
+modelFolders = ['ANN_date Feb 12 17_13_36']
 modelPaths = ['/'.join([allModelsFolder, folder]) for folder in modelFolders]
 modelsByPath = []
 modelByPathNames = []

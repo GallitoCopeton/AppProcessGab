@@ -12,13 +12,13 @@ from IF2.Processing import indAnalysis as inA
 from machineLearningUtilities import modelPerformance  as moPe
 from IF2.Shows.showProcesses import showImage as show
 
-picturesPath = '../assetsForTests/modelTesting/'
+picturesPath = '../assetsForTests/variationTesting/'
 picturesFullPath = [picturesPath+name for name in os.listdir(picturesPath) if name.endswith('.jpg') or name.endswith('.png') or name.endswith('.jpeg')]
 pictures = [iO.resizeImg(rI.readLocal(path), 728) for path in picturesFullPath]
 
 #%% Model loading
 allModelsFolder = '../Models/ANNs'
-modelFolders = ['ANN_date Feb  4 11_48_53']
+modelFolders = ['ANN_date Feb 12 17_13_36']
 modelPaths = ['/'.join([allModelsFolder, folder]) for folder in modelFolders]
 modelsByPath = []
 modelByPathNames = []
@@ -37,15 +37,8 @@ for modelPath in modelPaths:
 #%% Model info loading
 infoPaths = ['/'.join([allModelsFolder, folder, 'nnInfo.json']) for folder in modelFolders]
 modelsInfo = [moPe.loadModelInfo(path)['0'] for path in infoPaths]
-trainingFilesPaths = ['../Feature Tables/'+modelInfo['params']['trainingFileName']+'/dfInfo.json' for modelInfo in modelsInfo]
-idsUsedByPath = []
-for path in trainingFilesPaths:
-    with open(path) as jsonFile:
-        ids = [ObjectId(_id) for _id in json.load(jsonFile)['_idsUsed'].split(',')]
-        idsUsedByPath += (ids)
-idsUsedByPath = list(set(idsUsedByPath))
 #%%
-for picture in pictures:
+for picture in pictures[:]:
     testArea = cP.getTestArea(picture)
     markers = cP.getMarkers(testArea)[:-1]
     for marker in markers:
@@ -59,8 +52,8 @@ for picture in pictures:
             for feature, mean, v in zip(featureList, modelsInPathInfo['means'], modelsInPathInfo['variances']):
                 z = (feature - mean)/ math.sqrt(v)
                 scaledFeatures.append(z)
-            for model in modelsInPath:
+            for model, info in zip(modelsInPath, modelNames[:-1]):
                 vals = np.array(scaledFeatures).reshape(1, -1)
-                modelPred = 1 if model.predict(vals)[0][0] > .7 else 0
-                print(modelPred, model.predict(vals)[0][0])
-    show(testArea, figSize=(7,7))
+                modelPred = 1 if model.predict(vals)[0][0] > .75 else 0
+                print(f'{info}',modelPred, model.predict(vals)[0][0])
+    show(testArea, figSize=(4,4))

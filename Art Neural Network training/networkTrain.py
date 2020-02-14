@@ -15,7 +15,7 @@ from machineLearningUtilities import nnUtils as nnU
 
 # %% Paths and filenames
 tablesPath = '../Feature Tables'
-tableFolder = 'DF Feb  5 15_57_41'
+tableFolder = 'DF Feb 12 17_13_06'
 ext = '.xlsx'
 fullTablePath = '/'.join([tablesPath, tableFolder, tableFolder+ext])
 nnSavesFolder = '../Models/ANNs'
@@ -43,17 +43,17 @@ dateString = re.sub(r':', '_', todayDatetime.ctime())[4:-5]
 currentNNFolder = f'ANN_date {dateString}'
 currentNNPath = '/'.join([nnSavesFolder, currentNNFolder])
 qrQuery.makeFolders(currentNNPath)
-alpha = 5
+alpha = 1
 nFeatures = X.shape[1]
 outputNeurons = 1
 nSamples = len(X_train)
-activations = ['relu', 'relu']
-l1 = 0.01
+activations = ['relu', 'relu', 'relu', 'relu', 'relu', 'relu']
+l1 = None
 l2 = None
-dropout = 0.5
+dropout = 0
 batchNorm = False
-epochs = 500
-batch_size = 2**6
+epochs = 50
+batch_size = 2**5
 optimizer = 'adam'
 loss = 'binary_crossentropy'
 model = nnU.createANN(alpha=alpha, features=nFeatures, outputNeurons=outputNeurons, nSamples=nSamples,

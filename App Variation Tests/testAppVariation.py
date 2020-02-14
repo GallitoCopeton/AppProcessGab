@@ -1,6 +1,9 @@
 # %%
 import os
 
+import pandas as pd
+import numpy as np
+
 from IF2.Processing import imageOperations as iO
 from IF2.Processing import indAnalysis as inA
 from IF2.ReadImage import readImage as rI
@@ -22,17 +25,36 @@ markerNames = ['E6','CF','RV','CT']
 features2Extract = ['agl',
                     'aglMean',
                     'totalArea',
-                    'fullBlobs',
                     'bigBlobs',
-                    'medBlobs',
-                    'smallBlobs',]
-for picture in thirdTen:
+                    'medBlobs']
+markerDfList = []
+for picture in pictures:
     testArea = cP.getTestArea(picture)
     markers = cP.getMarkers(testArea)
+    allMarkersFeatures = []
     for marker, name in zip(markers, markerNames):
         features = inA.extractFeatures(marker, features2Extract)
-        print(f'Result for marker {name}')
-        for feature in features.keys():
-            featureRes = features[feature]
-            print(f'Result for feature {feature}: {featureRes}')
-    show(testArea, figSize=(5,5))
+        featureValues = list(features.values())
+        allMarkersFeatures += featureValues
+    iterables = [markerNames, features2Extract]
+    index = pd.MultiIndex.from_product(iterables, names=['name', 'data'])
+    singleMarkerDf = pd.DataFrame(np.array(allMarkersFeatures).reshape(1, len(allMarkersFeatures)),columns=index)
+    markerDfList.append(singleMarkerDf)
+    show(testArea)
+completeMarkerDf = pd.concat(markerDfList)
+corrE6 = completeMarkerDf['E6'].corr().T
+corrCF = completeMarkerDf['CF'].corr().T
+corrRV = completeMarkerDf['RV'].corr().T
+corrCT = completeMarkerDf['CT'].corr().T
+#%%
+size = 3
+splitTestDfs = [completeMarkerDf.iloc[i:i+size,:] for i in range(0, len(completeMarkerDf),size)]
+customSplitDfs = []
+for df in splitTestDfs:
+    descriptionDf = df.describe().T
+    percentage = descriptionDf['std']/descriptionDf['mean']
+    descriptionDf['%std'] = percentage
+    customSplitDfs.append(descriptionDf)
+fullTestsDescriptions = pd.concat([df.drop(['count','25%','50%','75%'], axis=1) for df in customSplitDfs])
+fullTestsDescriptions.to_excel('descriptions9.xlsx')
+completeMarkerDf.T.to_excel('complete_measurements9.xlsx')

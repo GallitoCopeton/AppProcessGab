@@ -22,7 +22,7 @@ xploraStagingImagesCollection = qrQuery.getCollection(
 # %%
 todaysDate = datetime.now()
 startDay = -1
-finishDay = 3
+finishDay = 0
 startDate = todaysDate - timedelta(days=startDay)
 finishDate = startDate - timedelta(days=finishDay-startDay)
 dateQuery = qrQuery.getDateQuery(startDate, finishDate)
