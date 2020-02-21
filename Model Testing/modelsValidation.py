@@ -16,12 +16,12 @@ from IF2.ReadImage import readImage as rI
 with open('../Database connections/connections.json') as jsonFile:
     connections = json.load(jsonFile)['connections']
 #%% Validation database
-zeptoConnection = connections['zepto']
+zeptoConnection = connections['testingZapto']
 zaptoImagesCollection = qrQuery.getCollection(
     zeptoConnection['URI'], zeptoConnection['databaseName'], zeptoConnection['collections']['markersCollectionName'])
 #%% Model loading
 allModelsFolder = '../Models/ANNs'
-modelFolders = ['ANN_date Feb 12 17_13_36']
+modelFolders = ['ANN_date Feb 19 10_26_18']
 modelPaths = ['/'.join([allModelsFolder, folder]) for folder in modelFolders]
 modelsByPath = []
 modelByPathNames = []
@@ -53,8 +53,7 @@ idsUsedByPath = list(set(idsUsedByPath))
 query = {'_id': {'$nin': idsUsedByPath}, 'diagnostic': {'$ne': None}}
 
 #%% Model validation
-modelPerformance = {}
-limit = 0
+limit = 500
 markers = zaptoImagesCollection.find(query).limit(limit)
 markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
                 {'diagnostic': marker['diagnostic'],
@@ -66,20 +65,23 @@ markersInfo = [[(iO.resizeFixed(rI.readb64(marker['image']))),
 markerImages = [info[0] for info in markersInfo]
 markersInfo = [info[1] for info in markersInfo]
 #%%
+modelPerformance = {}
 for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
     print('*'*80)
     diagnostic = inA.fixDiagnostic(markerInfo['diagnostic'])
-    for modelsInPath, modelNamesInPath, modelsInPathInfo in zip(modelsByPath, modelByPathNames, modelsInfo):
-        features2Extract = modelsInPathInfo['features']
-        features = inA.extractFeatures(markerImage, features2Extract)
-        featureListNames = sorted(
-            features.keys(), key=lambda i: features2Extract.index(i))
-        featureList = [features[featureName] for featureName in featureListNames]
-        scaledFeatures = []
-        for feature, mean, v in zip(featureList, modelsInPathInfo['means'], modelsInPathInfo['variances']):
-            z = (feature - mean)/ math.sqrt(v)
-            scaledFeatures.append(z)
-        for model, name in zip(modelsInPath, modelNamesInPath):
+    modelsInfoFull = [moPe.loadModelInfo(path) for path in infoPaths]
+    featuresInPath = [[modelsInPath[key]['features'] for key in modelsInPath.keys()] for modelsInPath in modelsInfoFull]
+    for modelsInPath, modelNamesInPath, modelsInPathInfo, featuresByModel in zip(modelsByPath, modelByPathNames, modelsInfo, featuresInPath):
+        for model, name, features2Extract in zip(modelsInPath, modelNamesInPath, featuresByModel):
+            features = inA.extractFeatures(markerImage, features2Extract)
+            featureListNames = sorted(
+                features.keys(), key=lambda i: features2Extract.index(i))
+            featureList = [features[featureName] for featureName in featureListNames]
+            scaledFeatures = []
+            for feature, mean, v in zip(featureList, modelsInPathInfo['max'], modelsInPathInfo['min']):
+    #            z = (feature - mean)/ math.sqrt(v)
+                z = (feature - v)/(mean-v)
+                scaledFeatures.append(z)
             vals = np.array(scaledFeatures).reshape(1, -1)
             if not name in modelPerformance.keys():
                 modelPerformance[name] = {}
@@ -87,7 +89,7 @@ for i, (markerImage, markerInfo) in enumerate(zip(markerImages, markersInfo)):
                 modelPerformance[name]['tN'] = 0
                 modelPerformance[name]['fP'] = 0
                 modelPerformance[name]['fN'] = 0
-            modelPred = 1 if model.predict(vals)[0][0] > .8 else 0
+            modelPred = 1 if model.predict(vals)[0][0] > .70 else 0
             print(f'El resultado del modelo {name} es {modelPred}')
             if modelPred == diagnostic:
                 if diagnostic == 1:

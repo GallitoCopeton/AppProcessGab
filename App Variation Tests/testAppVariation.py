@@ -55,6 +55,7 @@ for df in splitTestDfs:
     percentage = descriptionDf['std']/descriptionDf['mean']
     descriptionDf['%std'] = percentage
     customSplitDfs.append(descriptionDf)
-fullTestsDescriptions = pd.concat([df.drop(['count','25%','50%','75%'], axis=1) for df in customSplitDfs])
-fullTestsDescriptions.to_excel('descriptions9.xlsx')
-completeMarkerDf.T.to_excel('complete_measurements9.xlsx')
+fullTestsDescriptionsValues = pd.concat([df.drop(['count','25%','50%','75%'], axis=1) for df in customSplitDfs]).values
+fullTestsDescriptions = pd.DataFrame(fullTestsDescriptionsValues)
+fullTestsDescriptions.to_excel('descriptions18-02_2.xlsx', index=False)
+completeMarkerDf.T.to_excel('complete_measurementsFinal4.xlsx')

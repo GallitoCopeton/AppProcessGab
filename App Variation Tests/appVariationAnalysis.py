@@ -44,11 +44,9 @@ features = ['agl',
 markerNames = ['E6','CF','RV','CT']*10
 iterables = [markerNames, features]
 index = pd.MultiIndex.from_product(iterables, names=['name', 'data'])
-PATH_TO_PYTHON_DESCRIPTION_EXCEL = './descriptions9.xlsx'
+PATH_TO_PYTHON_DESCRIPTION_EXCEL = './descriptions18-02_2.xlsx'
 pythonDescriptions = pd.read_excel(PATH_TO_PYTHON_DESCRIPTION_EXCEL)
 copyPython = pythonDescriptions.values
-#pythonDescriptions.set_index(index, inplace=True)
-#diff = fullTestsDescriptions.subtract(pythonDescriptions)
 diff = pd.DataFrame(copyApp - copyPython)
 diff.set_index(index, inplace=True)
-diff.to_excel('differences0.xlsx')
+diff.to_excel('differences18-02_2.xlsx')

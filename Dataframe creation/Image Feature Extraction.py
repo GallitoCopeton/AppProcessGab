@@ -1,3 +1,4 @@
+
 # %%
 import datetime
 import re
@@ -18,7 +19,7 @@ zaptoImagesCollection = qrQuery.getCollection(
     zaptoConnection['URI'], zaptoConnection['databaseName'], zaptoConnection['collections']['markersCollectionName'])
 # %%
 
-limit = int(3168*.80)
+limit = int(3168*1)
 query = [
         {'$match': {'diagnostic': {'$ne': None}}},
         {'$sample': {'size': limit}}
@@ -35,11 +36,12 @@ markerImages = [info[0] for info in markersInfo]
 markersInfo = [info[1] for info in markersInfo]
 # %%
 features2Extract = [
+                    
 #                    'noise',
 #                    'roc',
                     'agl',
-                    'aglMean',
-                    'aglDist',
+#                    'aglMean',
+#                    'aglDist',
 #                    'distanceBetweenPoints',
 #                    'distance',
                     'nBlobs',
@@ -59,6 +61,7 @@ features2Extract = [
 #                    'q1Perimeter',
 #                    'q2Perimeter',
 #                    'q3Perimeter',
+                    '_id',
                     'diagnostic']
 registerCount = len(markersInfo)
 fullFeatures = []
@@ -74,6 +77,7 @@ for i, (marker, info) in enumerate(zip(markerImages, markersInfo)):
     featureListNames = sorted(
         features.keys(), key=lambda i: features2Extract.index(i))
     featureList = [features[name] for name in featureListNames]
+    featureList.append(info['_id'])
     featureList.append(diagnostic)
     fullFeatures.append(featureList)
 fullDataframe = pd.DataFrame(fullFeatures, columns=features2Extract)

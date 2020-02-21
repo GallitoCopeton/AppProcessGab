@@ -12,13 +12,13 @@ from IF2.Processing import indAnalysis as inA
 from machineLearningUtilities import modelPerformance  as moPe
 from IF2.Shows.showProcesses import showImage as show
 
-picturesPath = '../assetsForTests/variationTesting/'
+picturesPath = '../assetsForTests/Positives/'
 picturesFullPath = [picturesPath+name for name in os.listdir(picturesPath) if name.endswith('.jpg') or name.endswith('.png') or name.endswith('.jpeg')]
 pictures = [iO.resizeImg(rI.readLocal(path), 728) for path in picturesFullPath]
 
 #%% Model loading
 allModelsFolder = '../Models/ANNs'
-modelFolders = ['ANN_date Feb 12 17_13_36']
+modelFolders = ['ANN_date Feb 18 16_39_16']
 modelPaths = ['/'.join([allModelsFolder, folder]) for folder in modelFolders]
 modelsByPath = []
 modelByPathNames = []
@@ -38,7 +38,9 @@ for modelPath in modelPaths:
 infoPaths = ['/'.join([allModelsFolder, folder, 'nnInfo.json']) for folder in modelFolders]
 modelsInfo = [moPe.loadModelInfo(path)['0'] for path in infoPaths]
 #%%
-for picture in pictures[:]:
+for i, picture in enumerate(pictures[:]):
+#    if i % 3 != 0:
+#        continue
     testArea = cP.getTestArea(picture)
     markers = cP.getMarkers(testArea)[:-1]
     for marker in markers:

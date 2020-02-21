@@ -1,0 +1,98 @@
+{
+    "0": {
+        "max": "20.82066281365701,7.0,3.0,4.0,4.0,7.0,4.181622997567095",
+        "min": "0.0,0.0,0.0,0.0,0.0,0.0,-23.02585092994046",
+        "features": "agl,nBlobs,fullBlobs,bigBlobs,medBlobs,smallBlobs,logTA",
+        "params": {
+            "alpha": 7,
+            "l1": null,
+            "l2": 0.001,
+            "dropout": 0.3,
+            "batchNorm": false,
+            "acc": 0.8599640933572711,
+            "epochs": 100,
+            "batchSize": 64,
+            "split": 0.2,
+            "seed": 475,
+            "activations": "relu, relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "trainSamples": 2225,
+            "nSamples": 2782,
+            "fileName": "1582124757.pkl",
+            "trainingFileName": "DF Feb 18 12_02_10"
+        }
+    },
+    "2": {
+        "max": "23.64714570513744,7.0,3.0,4.0,4.0,4.176268232429443",
+        "min": "0.0,0.0,0.0,0.0,0.0,-23.02585092994046",
+        "features": "agl,nBlobs,fullBlobs,bigBlobs,medBlobs,logTA",
+        "params": {
+            "alpha": 7,
+            "l1": null,
+            "l2": 0.001,
+            "dropout": 0.3,
+            "batchNorm": false,
+            "acc": 0.8456014362657092,
+            "epochs": 100,
+            "batchSize": 64,
+            "split": 0.2,
+            "seed": 37,
+            "activations": "relu, relu, relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "trainSamples": 2225,
+            "nSamples": 2782,
+            "fileName": "1582124904.pkl",
+            "trainingFileName": "DF Feb 18 12_02_10"
+        }
+    },
+    "3": {
+        "max": "23.64714570513744,7.0,3.0,4.0,7.0,4.181622997567095",
+        "min": "0.0,0.0,0.0,0.0,0.0,-23.02585092994046",
+        "features": "agl,nBlobs,fullBlobs,bigBlobs,smallBlobs,logTA",
+        "params": {
+            "alpha": 7,
+            "l1": null,
+            "l2": 0.001,
+            "dropout": 0.3,
+            "batchNorm": false,
+            "acc": 0.8473967684021544,
+            "epochs": 100,
+            "batchSize": 64,
+            "split": 0.2,
+            "seed": 400,
+            "activations": "relu, relu, relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "trainSamples": 2225,
+            "nSamples": 2782,
+            "fileName": "1582125007.pkl",
+            "trainingFileName": "DF Feb 18 12_02_10"
+        }
+    },
+    "4": {
+        "max": "23.64714570513744,7.0,3.0,4.0,7.0,4.181622997567095",
+        "min": "0.0,0.0,0.0,0.0,0.0,-23.02585092994046",
+        "features": "agl,nBlobs,fullBlobs,bigBlobs,smallBlobs,logTA",
+        "params": {
+            "alpha": 7,
+            "l1": null,
+            "l2": 0.001,
+            "dropout": 0.3,
+            "batchNorm": false,
+            "acc": 0.8473967684021544,
+            "epochs": 500,
+            "batchSize": 1024,
+            "split": 0.2,
+            "seed": 400,
+            "activations": "relu, relu, relu, relu",
+            "optimizer": "adam",
+            "loss": "binary_crossentropy",
+            "trainSamples": 2225,
+            "nSamples": 2782,
+            "fileName": "1582125065.pkl",
+            "trainingFileName": "DF Feb 18 12_02_10"
+        }
+    }
+}
