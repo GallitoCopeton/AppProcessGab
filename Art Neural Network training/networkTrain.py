@@ -23,15 +23,16 @@ iteration = 0
 iterationDict = {}
 todayDatetime = datetime.datetime.now()
 # %% Train and test set
-df = pd.read_excel(fullTablePath)
+df = pd.read_excel('marker1d.xlsx')
 df.dropna(inplace=True)
-sns.countplot(x='diagnostic', data=df)
-X = mlU.getFeatures(df, 1, None)
+#sns.countplot(x='diagnostic', data=df)
+#%%
+X = df.iloc[:,:-2].values
 #X.drop('totalArea', inplace=True, axis=1)
 #X.drop('agl', inplace=True, axis=1)
 #X.drop('fullBlobs', inplace=True, axis=1)
 #X.drop('smallBlobs', inplace=True, axis=1)
-y = mlU.getLabels(df, 'diagnostic')
+y = df.iloc[:,-1].values
 # %% Split data
 split = .2
 seed = np.random.randint(0, 500)
